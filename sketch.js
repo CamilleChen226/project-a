@@ -24,7 +24,7 @@ let speedYp = [];
 let sizeP = [];
 let dP;
 let dC;
-let time = 660;
+let time = 600;
 let change = false;
 let r;
 let g;
@@ -38,6 +38,9 @@ let nF = [];
 let t;
 let sizeF = [];
 let ray = [];
+let s = 20;
+let textX;
+let textY;
 
 function setup() {
   createCanvas(800, 500);
@@ -47,7 +50,7 @@ function setup() {
   cy = random(100, 400);
   dia = 20;
   //partData
-  resetPart()
+  resetPart();
   //family
   for (let i = 0; i < 5; i++) {
     ray.push({
@@ -65,6 +68,19 @@ function draw() {
   drawDream();
   if (dC <= dia) {
     dia = dia + 5;
+    if (dia <= 1350) {
+      s = s + 1;
+      if (s >= 140) {
+        s = 20;
+      }
+      textSize(s);
+      fill(255)
+      stroke(255);
+      strokeWeight(5);
+      textX = frameCount % 60 
+      textY = frameCount % 60
+      text("z", mouseX + textX, mouseY - textY);
+    }
   }
   if (dia >= 1350) {
     dia = 1350;
@@ -72,12 +88,12 @@ function draw() {
   //particle
   if (dia >= 1350 && change == false) {
     time = time - 1;
-    drawPart()
+    drawPart();
     if (time > 0) {
       drawBlue();
     } else {
-      resetPart()
-      time = 660;
+      resetPart();
+      time = 600;
       dia = 20;
       drawDream();
       drawRay();
@@ -100,7 +116,7 @@ function draw() {
         b.mB = b.mB - b.speedB;
         b.nB = b.nB + b.speedB;
         noFill();
-        stroke(255,160);
+        stroke(255, 160);
         strokeWeight(1.5);
         //rotate(angle)
         circle(b.mB, b.nB, b.sizeB);
@@ -168,7 +184,7 @@ function drawBlue() {
   push();
   translate(mouseX, mouseY);
   //鬼畜尾巴
-  stroke(255,100);
+  stroke(255, 100);
   strokeWeight(5);
   x1 = sin(frameCount * 10) * 20;
   x2 = cos(frameCount * 10 + 10) * 15;
@@ -180,7 +196,7 @@ function drawBlue() {
   line(x3, 200, x4, 250);
   //body part
   noStroke();
-  fill(204, 255, 255,150);
+  fill(204, 255, 255, 150);
   beginShape();
   splineVertex(+0, -80);
   splineVertex(+100, +0);
@@ -212,7 +228,7 @@ function drawRay() {
   line(+150, +70, +450, +70);
   noStroke();
   //灰色翅膀
-  fill(102, 255, 255,180);
+  fill(102, 255, 255, 180);
   beginShape();
   splineVertex(-150, +60);
   splineVertex(-80, t);
@@ -253,7 +269,7 @@ function drawFamily() {
       scale(ray[i].sizeF);
       noStroke();
       //灰色翅膀
-      fill(178, 178, 178,100);
+      fill(178, 178, 178, 100);
       beginShape();
       splineVertex(-150, +60);
       splineVertex(-80, t);
@@ -270,7 +286,7 @@ function drawFamily() {
       splineVertex(-80, +30);
       endShape(CLOSE);
       //白色翅膀
-      fill(255)
+      fill(255);
       t = +sin(frameCount * 2) * 120 + 40;
       beginShape();
       splineVertex(-120, +60);
@@ -279,7 +295,7 @@ function drawFamily() {
       endShape(CLOSE);
       //尾巴
       strokeWeight(3);
-      stroke(255,150);
+      stroke(255, 150);
       line(+150, +70, +450, +70);
       pop();
     }
@@ -288,7 +304,7 @@ function drawFamily() {
 function resetPart() {
   part = [];
 
-  for (let p = 0; p < 3500; p++) {
+  for (let p = 0; p < 4000; p++) {
     part.push({
       xp: random(0, 800),
       yp: random(0, 500),
@@ -312,8 +328,8 @@ function drawPart() {
         pp.speedYp = -pp.speedYp;
       }
     }
-    pp.speedXp *= 0.9999;
-    pp.speedYp *= 0.9999;
+    pp.speedXp *= 0.999;
+    pp.speedYp *= 0.999;
     noStroke();
     fill(255);
     circle(pp.xp, pp.yp, pp.sizeP);
